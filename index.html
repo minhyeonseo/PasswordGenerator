@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Password Generator</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.6.2/css/bootstrap-slider.css">
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+
+
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">Password Generator</a>
+    </div>
+</nav>
+<div class="container">
+    <h1 class="page-header">Password Generator</h1>
+    <div class="panel panel-default">
+
+        <div class="w-75">
+            <input type="range" class="custom-range" id="length" min="1" max="32">
+            <label for="length">Password length</label> <span class="font-weight-bold text-primary ml-2 valueSpan"></span>
+        </div>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="includeAt" class="custom-control-input" checked>
+            <label class="custom-control-label" for="includeAt">특수문자 포함</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="includeNums" class="custom-control-input" checked>
+            <label class="custom-control-label" for="includeNums">숫자 포함</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="includeLowerCase" class="custom-control-input" checked>
+            <label class="custom-control-label" for="includeLowerCase">소문자 포함</label>
+        </div>
+        <div class="custom-control custom-checkbox">
+            <input type="checkbox" id="includeUpperCase" class="custom-control-input" checked>
+            <label class="custom-control-label" for="includeUpperCase">대문자 포함</label>
+        </div>
+    </div>
+    <br />
+    <p>비밀번호를 꼭 기록해주세요!</p>
+    <div class="card">
+        <div class="card-body bg-secondary text-white" id="password">
+        </div>
+    </div>
+    <br />
+    <input type="button" class="btn btn-primary" value="Copy Password" onclick="passwordCopy()">
+</div>
+</body>
+<script type="text/javascript">
+    let password = "";
+    $(document).ready(function() {
+
+        const $valueSpan = $('.valueSpan');
+        const $value = $('#length');
+        $valueSpan.html($value.val());
+        $value.on('input change', () => {
+            $valueSpan.html($value.val());
+            document.getElementById("password").innerHTML = passwordGen();
+        });
+    });
+    document.getElementById("password").innerHTML = passwordGen();
+
+    function passwordCopy() {
+        prompt("Ctrl+C", password);
+    }
+    function passwordGen() {
+        let result = "";
+        let words = "";
+        if(document.getElementById('includeAt').checked){
+            words += "!_";
+        }
+        if(document.getElementById('includeNums').checked){
+            words += "0123456789";
+        }
+        if(document.getElementById('includeUpperCase').checked){
+            words += "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        }
+        if(document.getElementById('includeLowerCase').checked){
+            words += "abcdefghijklmnopqrstuvwxyz";
+        }
+        for (let i = 0; i < $("#length").val(); i++) {
+            result += words.charAt(Math.floor(Math.random() * words.length));
+        }
+        password = result;
+        return result;
+    }
+</script>
+</html>
